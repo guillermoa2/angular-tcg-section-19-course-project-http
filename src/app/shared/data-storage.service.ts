@@ -2,6 +2,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 
+import { Recipe } from '../recipes/recipe.model';
 import { RecipeService } from "../recipes/recipe.service";
 
 
@@ -20,6 +21,14 @@ export class DataStorageService {
             )
             .subscribe(response => {
                 console.log(response);
+            });
+    }
+
+    fetchRecipes() {
+        this.http
+            .get<Recipe[]>('https://angular-tcg-sec-19-crsprj-http-default-rtdb.firebaseio.com/recipes.json')
+            .subscribe(recipes => {
+                this.recipeService.setRecipes(recipes);
             });
     }
 }
