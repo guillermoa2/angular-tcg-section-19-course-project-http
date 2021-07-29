@@ -1,7 +1,7 @@
 // Handling the HTTP requests in the recipe.service is perfectly fine & calling them on button click in the header template, but its saved here for easy finding/ referring back to the course material.
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { Recipe } from '../recipes/recipe.model';
 import { RecipeService } from "../recipes/recipe.service";
@@ -26,7 +26,7 @@ export class DataStorageService {
     }
 
     fetchRecipes() {
-        this.http
+        return this.http
             .get<Recipe[]>(
                 'https://angular-tcg-sec-19-crsprj-http-default-rtdb.firebaseio.com/recipes.json'
             )
@@ -40,10 +40,10 @@ export class DataStorageService {
                             ingredients: recipe.ingredients ?  recipe.ingredients : []
                         };
                     });
+                }),
+                tap(recipes => {
+                    this.recipeService.setRecipes(recipes);
                 })
             )
-            .subscribe(recipes => {
-                this.recipeService.setRecipes(recipes);
-            });
     }
 }

@@ -14,6 +14,7 @@ export class HeaderComponent {
   }
 
   onFetchData() {
-    this.dataStorageService.fetchRecipes();
+    // .subscribe() doesn't pass anything because we don't care about returning anything here.
+    this.dataStorageService.fetchRecipes().subscribe();
   }
 }
